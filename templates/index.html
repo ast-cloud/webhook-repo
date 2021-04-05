@@ -28,13 +28,13 @@
 
     <ul class="list-group my-5 mx-5">
 
-        {% if list1|length == 0 %}
+        {% if datalist|length == 0 %}
         <li class="list-group-item list-group-item-info">No actions till now.</li>
         {% endif %}
 
-        {% if list1|length > 0 %}
+        {% if datalist|length > 0 %}
         <li class="list-group-item mb-5">All Events -</li>
-            {% for l in list1 %}
+            {% for l in datalist %}
                 {% if l.action == 'PUSH' %}
                     <li class="list-group-item list-group-item-primary mb-2">{{l.author}} pushed to {{l.to_branch}} on {{l.timestamp}}</li>
                 {% endif %}

@@ -6,19 +6,19 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")
+    client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")                    
     db=client.get_database('action')
     a=db.events
-    listrev=list(a.find()).reverse()
+    listrev=list(a.find())
+    listrev=listrev[::-1]           #Reversing list so that latest entry appear first in UI
     return render_template('index.html',datalist=listrev)
 
-@app.route('/github', methods=['GET','POST'])
+@app.route('/github', methods=['GET','POST'])   #Route which processes webhook request
 def newchange():
     data=request.json
-    print(data)
     newdata={}
-    if 'pull_request' in data.keys():
-        if data['action']=='opened':
+    if 'pull_request' in data.keys():  #Distinguishing between pull_request and push by seeing keys in json data
+        if data['action']=='opened':     #Create new database entry only if it is a opened pull request
             ts=data['pull_request']['created_at']
             ts=dateutil.parser.parse(str(ts))
             ts=ts+timedelta(seconds=(5*3600)+1800)
@@ -42,18 +42,15 @@ def newchange():
              'timestamp': ts.strftime('%#I:%M %p %#d %B, %Y')
             }
     
-    if bool(newdata):
+    if bool(newdata):           #Avoiding empty entries in database
         client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")
         db=client.get_database('action')
         a=db.events
         a.insert_one(newdata)
-
-    
-
 
     return data
         
 
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run()
