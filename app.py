@@ -32,7 +32,7 @@ def newchange():
 
 
     if 'pusher' in data.keys():
-        ts=data['pull_request']['created_at']
+        ts=data['head_commit']['timestamp']
         ts=dateutil.parser.parse(str(ts))
         newdata={'request_id': data['after'],
              'author': data['head_commit']['author']['name'],
