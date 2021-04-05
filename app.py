@@ -10,15 +10,16 @@ def hello_world():
 def newchange():
     data=request.json
     print(data)
-    
+    newdata={}
     if 'pull_request' in data.keys():
-        newdata={'request_id': data['pull_request']['id'],
-             'author': data['pull_request']['user']['login'],
-             'action': 'PULL_REQUEST',
-             'from_branch': data['pull_request']['title'],
-             'to_branch': data['repository']['default_branch'],
-             'timestamp': data['pull_request']['created_at']
-        }
+        if data['action']=='opened':
+            newdata={'request_id': data['pull_request']['id'],
+                    'author': data['pull_request']['user']['login'],
+                    'action': 'PULL_REQUEST',
+                    'from_branch': data['pull_request']['title'],
+                    'to_branch': data['repository']['default_branch'],
+                    'timestamp': data['pull_request']['created_at']
+            }
 
 
     if 'pusher' in data.keys():
@@ -29,11 +30,12 @@ def newchange():
              'to_branch': data['repository']['default_branch'],
              'timestamp': data['head_commit']['timestamp']
             }
-
-    client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")
-    db=client.get_database('action')
-    a=db.events
-    a.insert_one(newdata)
+    
+    if bool(newdata):
+        client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")
+        db=client.get_database('action')
+        a=db.events
+        a.insert_one(newdata)
 
     
 
