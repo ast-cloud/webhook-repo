@@ -21,7 +21,7 @@ def newchange():
         if data['action']=='opened':     #Create new database entry only if it is a opened pull request
             ts=data['pull_request']['created_at']
             ts=dateutil.parser.parse(str(ts))
-            ts=ts+timedelta(seconds=(5*3600)+1800)
+            ts=ts+timedelta(seconds=(5*3600)+1800)   #Adding 5:30 hrs for IST
             newdata={'request_id': data['pull_request']['id'],
                     'author': data['pull_request']['user']['login'],
                     'action': 'PULL_REQUEST',
