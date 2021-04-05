@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from pymongo import MongoClient
 import dateutil.parser
+from datetime import timedelta
 app = Flask(__name__)
 
 @app.route('/')
@@ -20,6 +21,7 @@ def newchange():
         if data['action']=='opened':
             ts=data['pull_request']['created_at']
             ts=dateutil.parser.parse(str(ts))
+            ts=ts+timedelta(seconds=5*3600+1200)
             newdata={'request_id': data['pull_request']['id'],
                     'author': data['pull_request']['user']['login'],
                     'action': 'PULL_REQUEST',
