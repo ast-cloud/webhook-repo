@@ -9,7 +9,7 @@ def index():
     client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")
     db=client.get_database('action')
     a=db.events
-    print(list(a.find()))
+    listrev=list(a.find()).reverse()
     return render_template('index.html',list1=list(a.find()))
 
 @app.route('/github', methods=['GET','POST'])
