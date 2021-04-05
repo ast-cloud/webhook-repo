@@ -1,10 +1,15 @@
 from flask import Flask, render_template, request, redirect
 from pymongo import MongoClient
+import dateutil.parser
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def index():
+    client=MongoClient("mongodb+srv://ast:ast@cluster0.0kxgu.mongodb.net/action?retryWrites=true&w=majority")
+    db=client.get_database('action')
+    a=db.events
+    print(list(a.find()))
+    return render_template('index.html',list1=list(a.find()))
 
 @app.route('/github', methods=['GET','POST'])
 def newchange():
@@ -13,22 +18,26 @@ def newchange():
     newdata={}
     if 'pull_request' in data.keys():
         if data['action']=='opened':
+            ts=data['pull_request']['created_at']
+            ts=dateutil.parser.parse(str(ts))
             newdata={'request_id': data['pull_request']['id'],
                     'author': data['pull_request']['user']['login'],
                     'action': 'PULL_REQUEST',
                     'from_branch': data['pull_request']['title'],
                     'to_branch': data['repository']['default_branch'],
-                    'timestamp': data['pull_request']['created_at']
+                    'timestamp': ts.strftime('%#I:%M %p %#d %B, %Y')
             }
 
 
     if 'pusher' in data.keys():
+        ts=data['pull_request']['created_at']
+        ts=dateutil.parser.parse(str(ts))
         newdata={'request_id': data['after'],
              'author': data['head_commit']['author']['name'],
              'action': 'PUSH',
              'from_branch': data['repository']['default_branch'],
              'to_branch': data['repository']['default_branch'],
-             'timestamp': data['head_commit']['timestamp']
+             'timestamp': ts.strftime('%#I:%M %p %#d %B, %Y')
             }
     
     if bool(newdata):
