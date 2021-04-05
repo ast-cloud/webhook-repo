@@ -25,8 +25,8 @@ def newchange():
             newdata={'request_id': data['pull_request']['id'],
                     'author': data['pull_request']['user']['login'], #Couldn't find author name in pull_request post message so saved 'github username' instead
                     'action': 'PULL_REQUEST',
-                    'from_branch': data['pull_request']['title'],
-                    'to_branch': data['repository']['default_branch'],
+                    'from_branch': data['pull_request']['head']['ref'],
+                    'to_branch': data['pull_request']['base']['ref'],
                     'timestamp': ts.strftime('%#I:%M %p %#d %B, %Y')
             }
 
