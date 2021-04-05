@@ -15,7 +15,7 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Github Repository Events</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,7 @@
         {% endif %}
 
         {% if datalist|length > 0 %}
-        <li class="list-group-item mb-5">All Events -</li>
+        <li class="list-group-item mb-5"> <b>All Events -</b></li>
             {% for l in datalist %}
                 {% if l.action == 'PUSH' %}
                     <li class="list-group-item list-group-item-primary mb-2">{{l.author}} pushed to {{l.to_branch}} on {{l.timestamp}}</li>
