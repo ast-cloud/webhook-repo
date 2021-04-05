@@ -21,7 +21,7 @@ def newchange():
         if data['action']=='opened':
             ts=data['pull_request']['created_at']
             ts=dateutil.parser.parse(str(ts))
-            ts=ts+timedelta(seconds=5*3600+1200)
+            ts=ts+timedelta(seconds=(5*3600)+1800)
             newdata={'request_id': data['pull_request']['id'],
                     'author': data['pull_request']['user']['login'],
                     'action': 'PULL_REQUEST',
