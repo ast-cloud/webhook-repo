@@ -10,7 +10,7 @@ def index():
     db=client.get_database('action')
     a=db.events
     listrev=list(a.find()).reverse()
-    return render_template('index.html',list1=list(a.find()))
+    return render_template('index.html',datalist=listrev)
 
 @app.route('/github', methods=['GET','POST'])
 def newchange():
