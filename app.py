@@ -23,7 +23,7 @@ def newchange():
             ts=dateutil.parser.parse(str(ts))
             ts=ts+timedelta(seconds=(5*3600)+1800)   #Adding 5:30 hrs for IST
             newdata={'request_id': data['pull_request']['id'],
-                    'author': data['pull_request']['user']['login'],
+                    'author': data['pull_request']['user']['login'], #Couldn't find author name in pull_request post message so saved 'github username' instead
                     'action': 'PULL_REQUEST',
                     'from_branch': data['pull_request']['title'],
                     'to_branch': data['repository']['default_branch'],
