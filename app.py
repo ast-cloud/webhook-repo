@@ -14,7 +14,7 @@ def index():
     listrev=listrev[::-1]           #Reversing list so that latest entry appear first in UI
     listrev.append({'datet':datetime.now()})
     print(listrev)
-
+    
     return render_template('index.html',datalist=listrev)
 
 @app.route('/github', methods=['GET','POST'])   #Route which processes webhook request
@@ -57,4 +57,4 @@ def newchange():
 
 
 if __name__=='__main__':
-    app.run()
+    app.run(debug=True)

@@ -31,7 +31,9 @@
         {% if datalist|length == 0 %}
         <li class="list-group-item list-group-item-info">No events till now!</li>
         {% endif %}
-        <li class="list-group-item mb-5"> <h3>Current Time - {{datalist.datet}}</h3></li>
+
+        <li class="list-group-item mb-5"> <h3>Current Date and Time - {{(datalist|last).datet}}</h3></li>
+
         {% if datalist|length > 0 %}
         <li class="list-group-item mb-5"> <h3>All Events -</h3></li>
             {% for l in datalist %}
