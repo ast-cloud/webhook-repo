@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from pymongo import MongoClient
 import dateutil.parser
 from datetime import timedelta
+from datetime import datetime
 app = Flask(__name__)
 
 @app.route('/')
@@ -11,6 +12,9 @@ def index():
     a=db.events
     listrev=list(a.find())
     listrev=listrev[::-1]           #Reversing list so that latest entry appear first in UI
+    listrev.append({'datet':datetime.now()})
+    print(listrev)
+
     return render_template('index.html',datalist=listrev)
 
 @app.route('/github', methods=['GET','POST'])   #Route which processes webhook request
